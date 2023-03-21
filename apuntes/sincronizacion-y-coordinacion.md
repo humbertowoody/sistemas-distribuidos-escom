@@ -9,6 +9,10 @@
   - [Segundos solares](#segundos-solares)
   - [Segundos atómicos](#segundos-atómicos)
   - [Tiempo atómico internacional](#tiempo-atómico-internacional)
+  - [Tiempo universal coordinado UTC](#tiempo-universal-coordinado-utc)
+  - [Sincronización de relojes físicos](#sincronización-de-relojes-físicos)
+  - [Network Time Protocol (NTP)](#network-time-protocol-ntp)
+  - [Algoritmo de Sincronización de Relojes de Berkeley](#algoritmo-de-sincronización-de-relojes-de-berkeley)
 
 ## Sincronización de threads en Java
 
@@ -212,6 +216,44 @@ lentamente) con respecto.
 ## Tiempo atómico internacional
 
 - Se define el tiemop atómico internacional (TAI) como el promedio de los segundos atómicos transcurridos desde el 1 de enero de 1958, obtenido de casi 70 relojes de Cesio 133 alrededor del mundo.
+
+## Tiempo universal coordinado UTC
+
+- El tiempo universal coordinado UTC (Coordinated Universal Time), es el estándar
+  de tiempo que regula actualmente el tiempo de los relojes a nivel internacional.
+- El tiempo UTC ha reemplazado el tiempo medio de Greenwich (GMT).
+- El tiempo GMT toma como referencia la posición del sol a medio día.
+- Tanto el tiempo GMT como el tiempo UTC consieran el día solar compuesto por
+  86,400 segundos.
+- Una vez al año, dado al desfase que existe entre los segundos solares y los
+  segundos atómicos, UTC se ajusta saltándose (**adelantándose**) un segundo.
+
+## Sincronización de relojes físicos
+
+En los sistemas centralizados el tiempo se obtieen del reloj central, por tanto todos los procesos se sincronizan mediante un solo reloj.
+
+A la diferencia de valores de tiempo de un conjunto de computadoras se le llama distorsión del reloj.
+
+## Network Time Protocol (NTP)
+
+Es el protocolo estándar a ser utilizado para la sincronización del tiempo en 
+computadoras. Con NTP podemos realizar la sincronización del reloj de nuestra
+computadora con un servidor central de NTP, ahí podemos usar una gran variedad
+de servidores NTP, algunos son:
+
+- Relojes atómicos
+- Grandes empresas
+- Gobiernos
+
+## Algoritmo de Sincronización de Relojes de Berkeley
+
+- Se tienen 3 servidores: A, B y C.
+- El algoritmo primero envía la hora de A a todos los cliente (B y C).
+- Los clientes retornan la diferencia de la hora de A vs. sus horas internas.
+- Entonces A calcula el promedio de las horas y diferencias y suma el promedio.
+- Así, el servidor A envía de nuevo su hora y todos los demás copian la hora de A.
+
+
 
 [husos-horarios-img]: https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/World_Time_Zones_Map.png/1000px-World_Time_Zones_Map.png
 [imagen-pulsos-reloj]: https://learn.circuitverse.org/assets/images/clock_signal.jpg
