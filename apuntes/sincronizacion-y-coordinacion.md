@@ -13,6 +13,9 @@
   - [Sincronización de relojes físicos](#sincronización-de-relojes-físicos)
   - [Network Time Protocol (NTP)](#network-time-protocol-ntp)
   - [Algoritmo de Sincronización de Relojes de Berkeley](#algoritmo-de-sincronización-de-relojes-de-berkeley)
+  - [Relación Happens-Before](#relación-happens-before)
+  - [Reloj lógico](#reloj-lógico)
+  - [Algoritmo de sincronización de relojes lógicos de Lamport](#algoritmo-de-sincronización-de-relojes-lógicos-de-lamport)
 
 ## Sincronización de threads en Java
 
@@ -236,7 +239,7 @@ A la diferencia de valores de tiempo de un conjunto de computadoras se le llama 
 
 ## Network Time Protocol (NTP)
 
-Es el protocolo estándar a ser utilizado para la sincronización del tiempo en 
+Es el protocolo estándar a ser utilizado para la sincronización del tiempo en
 computadoras. Con NTP podemos realizar la sincronización del reloj de nuestra
 computadora con un servidor central de NTP, ahí podemos usar una gran variedad
 de servidores NTP, algunos son:
@@ -253,7 +256,44 @@ de servidores NTP, algunos son:
 - Entonces A calcula el promedio de las horas y diferencias y suma el promedio.
 - Así, el servidor A envía de nuevo su hora y todos los demás copian la hora de A.
 
+## Relación Happens-Before
 
+Leslie Lamport define la relación $A \rightarrow B$ como:
+
+1. Si $A$ y $B$ son eventos del mismo proceso y $A$ ocurre antes que $B$, entonces
+   $A \rightarrow B$.
+2. Si $A$ es el envío de un mensaje y $B$ es la recepción del mismo mensaje, entonces
+   $A \rightarrow B$.
+
+La relación **happens-before** tiene las siguientes propiedades:
+
+- **Transitiva**: Si $A \rightarrow B$ y $B \rightarrow C$, entonces $A \rightarrow C$.
+- **Anti-simétrica**: Si $A \rightarrow B$ entonces no $B \rightarrow A$.
+- **Irreflexiva**: No $A \rightarrow A$. para cada evento $A$.
+
+> Todas las funciones son relaciones pero no todas las relaciones son funciones.
+
+## Reloj lógico
+
+Se define un reloj lógico $C_i$ para un procesador $P_i$ como unfa función $C_i(A)$
+la cual asigna un número al evento $A$.
+
+Un reloj lógico se implementa como un contador sin una relación directa con un
+reloj físico, como es el caso de los contadores de "ticks" de las comopoutadoras
+digitales.
+
+Dados los eventos $A$ y $B$, si el evento $A$ ocure antes que el evento $B$,
+entonces $C_i(A) < C_i(B)$.
+
+Esto significa que si $A$ _happens-before_ $B$ entonces el evento $A$ ocurre
+en un tiempo lógico menor al tiempo lógico en que ocurre el evento $B$.
+
+## Algoritmo de sincronización de relojes lógicos de Lamport
+
+- Cuando enviamos un mensaje, el mensaje siempre debe incluir la hora local del
+  reloj dónde se originó el mensaje.
+- El que recibe el mensaje, si su reloj está desfasado, ajusta su reloj y envía
+  un mensaje de confirmación.
 
 [husos-horarios-img]: https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/World_Time_Zones_Map.png/1000px-World_Time_Zones_Map.png
 [imagen-pulsos-reloj]: https://learn.circuitverse.org/assets/images/clock_signal.jpg

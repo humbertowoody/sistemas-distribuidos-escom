@@ -28,8 +28,6 @@ Recuerden que deben eliminar las máquinas virtuales cuando no las usen, con la 
 
 Sea BT la transpuesta de la matriz B. Se deberá dividir las matrices A y BT en tres partes de igual tamaño, por tanto la matriz C estará dividida en 9 partes tal como se muestra en la siguiente figura:
 
-
-
 Debido a que las matrices se guardan por renglones en la memoria, para aprovechar la localidad espacial el producto se realizará renglón por renglón tal como vimos en clase. Entonces las matrices Ci se obtienen de la siguiente manera:
 
 C1=A1xBT1
@@ -43,9 +41,6 @@ C8=A3xBT2
 C9=A3xBT3
 
 Considere la siguiente topología:
-
-
-
 
 El nodo 0 será la computadora local. El nodo 0 inicializará las matrices A y B, obtendrá la transpuesta de la matriz B y enviará las matrices Ai y BTj a los nodos 1, 2 y 3.
 
