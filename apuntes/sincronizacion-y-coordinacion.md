@@ -16,6 +16,10 @@
   - [Relación Happens-Before](#relación-happens-before)
   - [Reloj lógico](#reloj-lógico)
   - [Algoritmo de sincronización de relojes lógicos de Lamport](#algoritmo-de-sincronización-de-relojes-lógicos-de-lamport)
+  - [Tipos de bloqueos](#tipos-de-bloqueos)
+    - [Interbloqueo (Deadlock)](#interbloqueo-deadlock)
+    - [Algoritmo centralizado de exclusión mutua](#algoritmo-centralizado-de-exclusión-mutua)
+    - [Algoritmo descentrealizado para exclusión mutua](#algoritmo-descentrealizado-para-exclusión-mutua)
 
 ## Sincronización de threads en Java
 
@@ -294,6 +298,87 @@ en un tiempo lógico menor al tiempo lógico en que ocurre el evento $B$.
   reloj dónde se originó el mensaje.
 - El que recibe el mensaje, si su reloj está desfasado, ajusta su reloj y envía
   un mensaje de confirmación.
+
+## Tipos de bloqueos
+
+Existen dos tipos de bloqueos, los bloqueos exclusivos y bloqueos compartidos.
+
+Dependiendo del recurso en particular, se puede utilizar solo bloqueos exclusivos
+o bien, bloques exclusivos y compartidos.
+
+Si un procesador bloquea un recurso de manera exclusiva, ningún procesador puede
+bloquear el recurso de manera exclusiva o compartida.
+
+Si un procesador bloquea un recurso de manera compartida, otros procesadores
+pueden bloquear el mismo recurso de manera compartida, es decir, múltiples
+bloqueos compartidos sobre el mismo recurso pueden co-existir.
+
+Si un recurso tiene uno o más bloqueos compartidos, ningún procesador puede
+obtener un bloqueo exclusivo sobre el mismo recurso.
+
+Para el acceso a dispositivos de almacenamiento (memorias, discos, etc), los
+bloqueos exclusivos se utilizan para proteger operaciones de escritura,
+mientras que los bloqueos compartidos se utilizan para proteger lecturas.
+
+Por ejemplo, un **bloqueo compartido** sobre un archivo en el disco permite que
+varios procesadorespuedan leer el archivo, pero no permite que ningún procesador
+escriba el archivo.
+
+Por otra parte, un **bloqueo esclusivo** sobre el mismo archivo garantiza que
+solo un procesador pueda escribir y ningún otro procesador puede leer o escribir
+el archivo.
+
+### Interbloqueo (Deadlock)
+
+En un sistema distribuido las computadoras compiten por adquirir el bloqueo sube
+un recurso.
+
+En una situación de competencia existe la posibilidad de que una o varias
+computadoras nunca adquieran el recurso debido a deficiencias en el algoritmo
+de exclusión.
+
+Cuando una computadora no puede adquirir el recurso, se dice que se encuentra
+en un estado de **bloqueo**.
+
+El interbloqueo ocurre cuando dos procesadores se bloquean mutuamente, es decir,
+cuando dos procesadores se bloquean en orden inverso.
+
+Por ejemplo, si el procesador $P_1$ bloquea un recurso $R_1$ y luego el procesador
+$P_2$ bloquea el recurso $R_2$, y luego el procesador $P_1$ intenta bloquear el
+recurso $R_2$ y el procesador $P_2$ intenta bloquear el recurso $R_1$, entonces
+ambos procesadores se bloquean mutuamente.
+
+### Algoritmo centralizado de exclusión mutua
+
+El algoritmo centralizado de exclusión mutua consiste en un proceso central
+que se encarga de otorgar los bloqueos.
+
+Este algoritmo implementa una cola tipo FIFO, por lo que los nodos que solicitan
+el bloqueo se encolan y el proceso central otorga el bloqueo a los nodos en el
+orden en que fueron encolados.
+
+El algoritmo centralizado de exclusión mutua tiene las siguientes ventajas:
+
+- Es fácil de implementar.
+- Es fácil de entender.
+- Es fácil de depurar.
+- Es fácil de extender.
+
+El algoritmo centralizado de exclusión mutua tiene las siguientes desventajas:
+
+- Es un punto de falla.
+- Es un cuello de botella.
+- Es un único punto de control.
+- Es un único punto de coordinación.
+
+Para que este algoritmo falle, o caiga en una situación de interbloqueo, es
+necesario que el proceso central falle o que el nodo que solicitó el bloqueo
+falle.
+
+### Algoritmo descentrealizado para exclusión mutua
+
+La desventaja del algoritmo centralizado de exclusión mutua es que es el coordinador
+puede saturarse si recibe muchas peticiones, por esta razón es mejor implementar un algoritmo descentralizado.
 
 [husos-horarios-img]: https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/World_Time_Zones_Map.png/1000px-World_Time_Zones_Map.png
 [imagen-pulsos-reloj]: https://learn.circuitverse.org/assets/images/clock_signal.jpg
