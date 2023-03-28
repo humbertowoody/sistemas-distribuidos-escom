@@ -24,17 +24,30 @@ public class MulticastChat {
         MulticastSocket socket = new MulticastSocket(PORT);
         InetAddress group = InetAddress.getByName(MULTICAST_IP);
         socket.joinGroup(group);
-
-        while (true) {
+        String message;
+        do {
           byte[] buffer = new byte[MESSAGE_LENGTH];
           DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
           socket.receive(packet);
-          String message = new String(packet.getData()).trim();
+          message = new String(packet.getData()).trim();
           String senderUsername = message.substring(0, message.indexOf("--->"));
           if (!senderUsername.equals(username)) {
-            System.out.println(message);
+            String chat = message.substring(message.indexOf("--->") + 4, message.length());
+            if (chat.equalsIgnoreCase("salir")) {
+              System.out.println("\n" + senderUsername + " ha salido del grupo.");
+              System.out.print("Escribe tu mensaje: ");
+            } else {
+              System.out.println(
+                  "\n(" + senderUsername + "): " + chat);
+              System.out.print("Escribe tu mensaje: ");
+            }
           }
-        }
+        } while (!message.equalsIgnoreCase(username + "--->salir"));
+
+        System.out.println("Saliendo del grupo...");
+
+        socket.leaveGroup(group);
+        socket.close();
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -45,15 +58,26 @@ public class MulticastChat {
       MulticastSocket socket = new MulticastSocket();
       InetAddress group = InetAddress.getByName(MULTICAST_IP);
       Scanner scanner = new Scanner(System.in);
+      String message;
 
-      while (true) {
+      do {
         System.out.print("Escribe tu mensaje: ");
         String input = scanner.nextLine();
-        String message = username + "--->" + input;
+        message = username + "--->" + input;
         byte[] buffer = message.getBytes();
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length, group, PORT);
         socket.send(packet);
-      }
+      } while (!message.equalsIgnoreCase(username + "--->salir"));
+
+      scanner.close();
+
+      socket.close();
+
+      receiveThread.join();
+
+      System.out.println("Saliendo del chat...");
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
     }
