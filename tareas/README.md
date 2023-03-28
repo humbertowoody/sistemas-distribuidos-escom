@@ -18,7 +18,7 @@ public class archivo {
     System.out.println("¡Hola! :D");
   }
 }
-``` 
+```
 
 En los proyectos que se requiera de cierto tipo de sincronización se usará 
 Docker y se dejará documentación para poder usarlo.
