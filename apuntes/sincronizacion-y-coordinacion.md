@@ -20,6 +20,9 @@
     - [Interbloqueo (Deadlock)](#interbloqueo-deadlock)
     - [Algoritmo centralizado de exclusión mutua](#algoritmo-centralizado-de-exclusión-mutua)
     - [Algoritmo descentrealizado para exclusión mutua](#algoritmo-descentrealizado-para-exclusión-mutua)
+  - [Algoritmos de Elección](#algoritmos-de-elección)
+    - [Algoritmo de elección del abusón (bully)](#algoritmo-de-elección-del-abusón-bully)
+    - [Algoritmo de elección en anillo (token ring)](#algoritmo-de-elección-en-anillo-token-ring)
 
 ## Sincronización de threads en Java
 
@@ -379,6 +382,45 @@ falle.
 
 La desventaja del algoritmo centralizado de exclusión mutua es que es el coordinador
 puede saturarse si recibe muchas peticiones, por esta razón es mejor implementar un algoritmo descentralizado.
+
+## Algoritmos de Elección
+
+Son los algoritmos que se emplean para determinar el coordinador de nuestro
+conjunto de nodos.
+
+### Algoritmo de elección del abusón (bully)
+
+El algoritmo supone que los nodos están ordenados por número de nodo.
+
+Es un algoritmo recursivo.
+
+El nodo que inicia el proceso de elección es aquel que se da cuenta que el
+coordinador no responde.
+
+El profesor nos hizo una analogía con un barco dónde el marinero con menor
+grado no se vuelve coordinador (admirante) de golpe, sino que se releva
+la decisión al superior. Por ejemplo, el 1 manda mensaje y se da cuenta que
+el coordinador no está respondiendo, por lo que entonces envía mensaje al 2 y
+al 3, de los cuales el dos responde, ok, yo me encargo, entonces el 2 envía un
+mensaje solicitando ser el coordinador y, como nadie responde, entonces el dos
+se convierte en el coordinador.
+
+El mensaje de elección se manda a los que están arriba.
+
+El mensaje de coordinador se envía a los que están abajo.
+
+### Algoritmo de elección en anillo (token ring)
+
+El proceso de elección inicia el nodo que se da cuenta que el coordinador no
+responde.
+
+Los nodos al recibir la lista, se busca a sí mismo, y si es el nodo más grande
+de la lista, él se convierte en el coordinador.
+
+Si un nodo se encuentra en una lista y no es el nodo mayor, ignora la lista y
+deja de reenviarlo.
+
+Si se encuentra quiere decir que ya dió la vuelta completa por el anillo.
 
 [husos-horarios-img]: https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/World_Time_Zones_Map.png/1000px-World_Time_Zones_Map.png
 [imagen-pulsos-reloj]: https://learn.circuitverse.org/assets/images/clock_signal.jpg

@@ -4,7 +4,7 @@ En esta sección se encuentran las tareas realizadas durante la materia.
 
 La mayoría se encuentran escritas en Java, para compilar usamos:
 
-`javac archivo.java` 
+`javac archivo.java`
 
 Y ejecutaremos el programa con:
 
@@ -20,17 +20,19 @@ public class archivo {
 }
 ```
 
-En los proyectos que se requiera de cierto tipo de sincronización se usará 
+En los proyectos que se requiera de cierto tipo de sincronización se usará
 Docker y se dejará documentación para poder usarlo.
 
 ## Listado de Tareas
 
-|       Tarea        | Descripción                                       | Fecha de Entrega |
-| :----------------: | ------------------------------------------------- | :--------------: |
-| [Tarea 1][tarea-1] | Sistema distribuído para calcular números primos. |  14/Marzo/2023   |
-| [Tarea 2][tarea-2] | Sistema distribuído para multiplicar matrices.    |  24/Marzo/2023   |
-| [Tarea 3][tarea-3] | Chat multicast                                    |  29/Marzo/2023   |
+|       Tarea        | Descripción                                           | Fecha de Entrega |
+| :----------------: | ----------------------------------------------------- | :--------------: |
+| [Tarea 1][tarea-1] | Sistema distribuído para calcular números primos.     |  14/Marzo/2023   |
+| [Tarea 2][tarea-2] | Sistema distribuído para multiplicar matrices.        |  24/Marzo/2023   |
+| [Tarea 3][tarea-3] | Chat multicast                                        |  29/Marzo/2023   |
+| [Tarea 4][tarea-4] | Transferencia de archivos utilizando sockets seguros. |   5/Abril/2023   |
 
 [tarea-1]: tarea-1/README.md
 [tarea-2]: tarea-2/README.md
 [tarea-3]: tarea-3/README.md
+[tarea-4]: tarea-4/README.md
