@@ -97,3 +97,6 @@ $RECYCLE.BIN/
 
 # Directorio de Azure (llaves SSH y cosas sensibles).
 azure/
+
+# Directorio de keystores para los servidores seguros de Java.
+keystores/
