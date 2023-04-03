@@ -99,4 +99,4 @@ $RECYCLE.BIN/
 azure/
 
 # Directorio de keystores para los servidores seguros de Java.
-keystores/
+keystores_java/
