@@ -1,4 +1,4 @@
-# Sincronización y Coordinación
+# Sincronizació y Coordinación
 
 - [Sincronización y Coordinación](#sincronización-y-coordinación)
   - [Sincronización de threads en Java](#sincronización-de-threads-en-java)
@@ -421,6 +421,113 @@ Si un nodo se encuentra en una lista y no es el nodo mayor, ignora la lista y
 deja de reenviarlo.
 
 Si se encuentra quiere decir que ya dió la vuelta completa por el anillo.
+
+## Comunicación en grupo confiable
+
+Un sistema distribuido es **tolerante a las fallas** si tiene la capacidad de
+proveer sus servicios incluso ante la presencia de fallas, es decir, el sistema
+continua operando con normalidad ante los fallos.
+
+## Fiabilidad de un sistema
+
+En la medida que un sistema es tolerante a las fallas es un sistema **fiable**.
+
+La **fiabilidad** de un sistema es un requerimiento no funcional, el cual a su
+vez se compone de los siguientes requerimientos no funcionales:
+
+## Disponibilidad
+
+La disponibilidad es la probabilidad de que el sistema funcione correctamente
+siempre, es decir, la probabilidad de poder utilizar un sistema en un momento
+dado.
+
+## Confiabilidad
+
+La confiabilidad es la capacidad de un sistema de funcionar continuamente sin
+fallar.
+
+La confiabilidad se define en términos de un intervalo de tiemop de
+funcionamiento continua, a diferencia de la disponibilidad, la cual se define
+en términos de la probabilidad de poder utilizar el sistema en un momento dado.
+
+Por ejemplo, si un sistema se cae un segundo cada día, se dice que tiene una
+disponibilida anual del 99.99% sin embargo no es confiable.
+
+## Seguridad
+
+La seguridad desde el punto de vista de tolerancia a fallas se refiere a la
+propiedad que tiene el sistema de no causar un eventto catastrófico cuando
+falla.
+
+Por ejemplo, un sistema de conducción autónoma no es seguro si al fallar el
+automóvil choca y provoca daños a los pasajeros.
+
+## Mantenimiento
+
+El mantenimiento se refiere a la capacidad que tiene el sistema de ser
+reparado cuando falla
+
+## Clasificación de fallas en un sistema
+
+Las fallas en un sistema se pueden clasificar en cinco categorías:
+
+- Falla de congelación: cuando se traba o no responde.
+- Falla de omisión: cuando no responde a la petición.
+- Falla de tiempo: timeouts.
+- Falla de respuesta: cuando el sistema produce un valor incorrecto de respuesta.
+- Falla arbitraria: cuando produce respuestas arbitrarias.
+
+## Comunicación unicast confiable
+
+Para establecer la comunicación unicast confiable se utiliza generalmente el
+protocolo TCP el cual implementa la retransmisión de mensajes para ocultar las
+fallas por omisión.
+
+Las fallas por congelación (cuando se produce la desconexión) no son ocultadas
+por el protocolo TCP.
+
+## Comunicación multicast confiable
+
+Para poder realizar una comunicación confiable en Multicast tenemos tres
+opciones.
+
+### Punto a Punto
+
+Una primera aproximación para implementar la comunicación multicast confiable es
+la utilización de múltiples conexiones punto a punto, sin embargo esta solución
+resulta poco eficiente debido a que las características del protocolo TCP.
+
+Como vimos anteriormente la comunicación multicast basada en sockets datagrama
+no es 100% confiable, debido a que es posible que algunos paquetes se pierdan en
+el camino, además, los paquetes no son recibidos en el orden en que son
+enviados.
+
+### Acuse de recibo
+
+Una segunda aproximación es el uso de sockets datagrama.
+
+En este caso, para garantizar que todos los procesos reciben todos los mensajes,
+cada proceso receptor deberá enviar un mensaje de acuse de recibo
+(acknowledgement) si el acuse no se recibe en un tiempo predefinido, el mensaje
+se vuelve a retransmitir.
+
+### Acuse de recibo negativo
+
+Si un receptor no recibe un mensaje en el tiempo determinado se envía un mensaje
+indicando que no se recibió el mensaje para que el transmisor lo vuelva a enviar.
+
+## Multicast Atómico
+
+El multicast atómico se refiere a la garantía de que un mensaje llegue a todos
+los destinatarios o a ninguno.
+
+La atomicidad en la comunicación multicast es de utilidad para la implementación
+de los requerimientos no funcionales que tienen que ver con la consistencia
+de los datos.
+
+Por ejemplo, si un archivo es replicado en un grupo de computadoras, los cambios
+que se realizan al archivo, deben ser replicados en todas las computadoras que
+forman parte del grupo.
 
 [husos-horarios-img]: https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/World_Time_Zones_Map.png/1000px-World_Time_Zones_Map.png
 [imagen-pulsos-reloj]: https://learn.circuitverse.org/assets/images/clock_signal.jpg
