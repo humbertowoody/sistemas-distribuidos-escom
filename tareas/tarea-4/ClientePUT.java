@@ -1,6 +1,5 @@
 import javax.net.ssl.*;
 import java.io.*;
-import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -8,7 +7,7 @@ public class ClientePUT {
 
     public static void main(String[] args) {
         if (args.length != 3) {
-            System.out.println("Uso: java SecureFileClientPut <IP del servidor> <puerto del servidor> <nombre del archivo>");
+            System.out.println("Uso: java ClientePUT <IP del servidor> <puerto del servidor> <nombre del archivo>");
             return;
         }
 

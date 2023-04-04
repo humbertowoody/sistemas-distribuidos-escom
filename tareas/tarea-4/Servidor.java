@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +37,7 @@ public class Servidor {
 
         @Override
         public void run() {
+            System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostAddress());
             try (
                 InputStream in = clientSocket.getInputStream();
                 OutputStream out = clientSocket.getOutputStream();
@@ -68,6 +68,7 @@ public class Servidor {
                     e.printStackTrace();
                 }
             }
+            System.out.println("Cliente desconectado");
         }
 
         private void handleGetRequest(String fileName, BufferedWriter writer) throws IOException {
@@ -77,6 +78,7 @@ public class Servidor {
                 writer.flush();
                 clientSocket.getOutputStream().write(fileContent);
                 clientSocket.getOutputStream().flush();
+                System.out.println("Archivo " + fileName + " enviado");
             } catch (IOException e) {
                 writer.write("ERROR\r\n");
                 writer.flush();
@@ -93,6 +95,7 @@ public class Servidor {
                 Files.write(Paths.get(fileName), fileContent);
                 writer.write("OK\r\n");
                 writer.flush();
+                System.out.println("Archivo " + fileName + " recibido");
             } catch (IOException e) {
                 writer.write("ERROR\r\n");
                 writer.flush();
