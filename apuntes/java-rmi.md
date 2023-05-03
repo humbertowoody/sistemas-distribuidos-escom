@@ -6,7 +6,7 @@ invocar funciones que yacen en otros nodos.
 ## JSON
 
 JSON (JavaScript Object Notation) es un formato texto para el intercambio de
-datos. JSON corresponde a la sintazis utilizada en JavaScript para escribir
+datos. JSON corresponde a la sintaxis utilizada en JavaScript para escribir
 objetos.
 
 JSON es un formato independiente del lenguaje de programación, de manera que es
