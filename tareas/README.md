@@ -31,8 +31,12 @@ Docker y se dejará documentación para poder usarlo.
 | [Tarea 2][tarea-2] | Sistema distribuído para multiplicar matrices.        |  24/Marzo/2023   |
 | [Tarea 3][tarea-3] | Chat multicast                                        |  29/Marzo/2023   |
 | [Tarea 4][tarea-4] | Transferencia de archivos utilizando sockets seguros. |   5/Abril/2023   |
+| [Tarea 5][tarea-5] | Multiplicación de matrices con objetos distribuídos.  |   2/Mayo/2023    |
+| [Tarea 6][tarea-6] | Servicio REST usando Tomcat                           |   8/Mayo/2023    |
 
 [tarea-1]: tarea-1/README.md
 [tarea-2]: tarea-2/README.md
 [tarea-3]: tarea-3/README.md
 [tarea-4]: tarea-4/README.md
+[tarea-5]: tarea-5/README.md
+[tarea-6]: tarea-6/README.md
