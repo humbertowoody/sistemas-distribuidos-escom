@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lista de Artículos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        background-color: #4caf50;
+        padding: 10px;
+        color: white;
+        text-align: center;
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+      }
+
+      .article {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        width: calc(100% / 4 - 40px);
+      }
+
+      .article button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+      }
+
+      .article button:hover {
+        background-color: #45a049;
+      }
+
+      .search {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Lista de Artículos</h1>
+      <input
+        type="text"
+        id="search"
+        class="search"
+        placeholder="Buscar artículos..."
+      />
+      <button id="carrito-btn">Carrito</button>
+    </div>
+    <div id="articles-container" class="container"></div>
+
+    <hr />
+    <a href="index.html">Volver al menú principal</a>
+    <p>Humberto Alejandro Ortega Alcocer - 2016630495</p>
+    <script>
+      document
+        .getElementById("carrito-btn")
+        .addEventListener("click", function () {
+          window.location.href = "/carrito.html";
+        });
+
+      fetch("http://10.10.10.10:8080/articulos")
+        .then((response) => response.json())
+        .then((data) => {
+          var container = document.getElementById("articles-container");
+          data.forEach((articulo) => {
+            var articleDiv = document.createElement("div");
+            articleDiv.className = "article";
+
+            articleDiv.innerHTML = `
+                        <h2>${articulo.nombre}</h2>
+                        <p>Precio: $${articulo.precio}</p>
+                        <p>Cantidad Disponible: ${articulo.cantidad}</p>
+                        <button class="ver-mas-btn" data-id="${articulo.id}">Ver más</button>
+                        <input type="number" min="1" max="${articulo.cantidad}" value="1">
+                        <button class="add-to-cart-btn" data-id="${articulo.id}">Añadir al carrito</button>
+                    `;
+
+            container.appendChild(articleDiv);
+          });
+
+          document.querySelectorAll(".ver-mas-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              var id = this.getAttribute("data-id");
+              var articulo = data.find((articulo) => articulo.id == id);
+              alert(`Descripción: ${articulo.descripcion}`);
+            });
+          });
+
+          document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              var id = this.getAttribute("data-id");
+              var cantidad = this.previousElementSibling.value;
+              fetch("http://10.10.10.10:8080/alta_carrito", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id, cantidad }),
+              })
+                .then((response) => response.json())
+                .then((json) => {
+                  console.log("Artículo añadido:", json);
+                });
+            });
+          });
+        });
+    </script>
+  </body>
+</html>
