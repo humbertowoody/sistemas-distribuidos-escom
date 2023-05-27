@@ -184,7 +184,7 @@ public class Servicio {
   }
 
   @POST
-  @Path("alta_carrito_articulo")
+  @Path("carrito_articulos")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response altaCarritoArticulo(String json) throws Exception {
@@ -344,8 +344,8 @@ public class Servicio {
     return Response.ok().build();
   }
 
-  @POST
-  @Path("modifica_carrito_articulo")
+  @PUT
+  @Path("carrito_articulos")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response modificaCarritoArticulo(String json) throws Exception {
@@ -424,19 +424,53 @@ public class Servicio {
     return Response.ok().build();
   }
 
-  @POST
-  @Path("borra_carrito")
+  @DELETE
+  @Path("carrito_articulos")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response borraCarrito() throws Exception {
+  public Response borraCarrito(String json) throws Exception {
+    ParamBorraCarritoArticulo p = (ParamBorraCarritoArticulo) j.fromJson(json,
+        ParamBorraCarritoArticulo.class);
+
     Connection conexion = pool.getConnection();
+
+    // Obtenemos el artículo en cuestión desde la base de datos
+    Carrito carrito_articulo = null;
+    try {
+      PreparedStatement stmt_1 = conexion.prepareStatement(
+          "SELECT * FROM carrito WHERE id_articulo=?");
+      try {
+        stmt_1.setInt(1, p.id_articulo);
+        ResultSet rs = stmt_1.executeQuery();
+        try {
+          if (rs.next()) {
+            carrito_articulo = new Carrito();
+            carrito_articulo.id_articulo = rs.getInt("id_articulo");
+            carrito_articulo.cantidad = rs.getInt("cantidad");
+          }
+        } finally {
+          rs.close();
+        }
+      } finally {
+        stmt_1.close();
+      }
+    } catch (Exception e) {
+      return Response.status(400).entity(j.toJson(new Error(e.getMessage()))).build();
+    }
 
     try {
       conexion.setAutoCommit(false);
 
       PreparedStatement stmt_1 = conexion.prepareStatement(
-          "DELETE FROM carrito");
+          "DELETE FROM carrito where id_articulo=?");
+      PreparedStatement stmt_2 = conexion.prepareStatement(
+          "UPDATE articulos SET cantidad=cantidad+? WHERE id_articulo=?");
 
       try {
+        stmt_2.setInt(0, carrito_articulo.cantidad);
+        stmt_2.setInt(1, carrito_articulo.id_articulo);
+        stmt_2.executeUpdate();
+
+        stmt_1.setInt(0, carrito_articulo.id_articulo);
         stmt_1.executeUpdate();
       } finally {
         stmt_1.close();
