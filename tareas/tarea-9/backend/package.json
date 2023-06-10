@@ -1,0 +1,23 @@
+{
+  "name": "Tarea9-Distribuidos-ESCOM",
+  "version": "1.0.0",
+  "description": "Backend para la Tarea 9 de la materia de Sistemas Distribuidos",
+  "author": "Humberto Alejandro Ortega Alcocer",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "mysql2": "^3.3.3",
+    "sequelize": "^6.32.0"
+  },
+  "devDependencies": {
+    "@azure/functions": "^3.0.0",
+    "@types/node": "18.x",
+    "azure-functions-core-tools": "^4.x",
+    "typescript": "^4.0.0"
+  }
+}
