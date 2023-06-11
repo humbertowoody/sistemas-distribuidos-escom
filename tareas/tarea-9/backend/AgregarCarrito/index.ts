@@ -44,11 +44,15 @@ const httpTrigger: AzureFunction = async function (
     try {
       // Iniciamos la conexión con la base de datos.
       const sequelize = new Sequelize(
-        "mysql://root:root@localhost:3306/tarea9",
+        "mysql://humberto:Tacos12345@t9-bd-2016630495.mysql.database.azure.com:3306/tarea9",
         {
           dialect: "mysql",
           dialectOptions: {
             multipleStatements: true,
+            ssl: {
+              require: true,
+              rejectUnauthorized: false,
+            },
           },
         }
       );

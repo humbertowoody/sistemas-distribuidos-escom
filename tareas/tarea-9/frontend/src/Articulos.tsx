@@ -11,7 +11,11 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Articulo from "./Articulo";
-import { URL_FUNCIONES_AZURE } from "./Constantes";
+import {
+  CLIENT_ID_FUNCIONES_AZURE,
+  CODIGO_FUNCIONES_AZURE,
+  URL_FUNCIONES_AZURE,
+} from "./Constantes";
 import Carrito from "./Carrito";
 
 const Articulos: React.FC = () => {
@@ -41,7 +45,9 @@ const Articulos: React.FC = () => {
   // objetos Carrito para cada uno a modo de controlar el flujo más fácil.
   useEffect(() => {
     axios
-      .get(`${URL_FUNCIONES_AZURE}/ObtenerArticulos`)
+      .get(
+        `${URL_FUNCIONES_AZURE}/ObtenerArticulos?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`
+      )
       .then((response) => {
         // Actualizamos el estado de los carritos.
         setCarritos(articulosACarritos(response.data));
@@ -63,7 +69,9 @@ const Articulos: React.FC = () => {
     event.preventDefault();
     const nombre = event.target.value;
     axios
-      .get(`${URL_FUNCIONES_AZURE}/ObtenerArticulos?nombre=${nombre}`)
+      .get(
+        `${URL_FUNCIONES_AZURE}/ObtenerArticulos?nombre=${nombre}&code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`
+      )
       .then((response) => setCarritos(articulosACarritos(response.data)))
       .catch((error) => console.error("Error fetching products:", error));
   };
@@ -98,10 +106,13 @@ const Articulos: React.FC = () => {
       // Validamos que la cantidad esté disponible en el artículo.
       if (carrito.cantidad <= carrito.articulo.cantidad) {
         axios
-          .post(`${URL_FUNCIONES_AZURE}/AgregarCarrito`, {
-            articulo_id: carrito.articulo_id,
-            cantidad: carrito.cantidad,
-          })
+          .post(
+            `${URL_FUNCIONES_AZURE}/AgregarCarrito?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`,
+            {
+              articulo_id: carrito.articulo_id,
+              cantidad: carrito.cantidad,
+            }
+          )
           .then((response) => {
             const articulo: Articulo = response.data;
 

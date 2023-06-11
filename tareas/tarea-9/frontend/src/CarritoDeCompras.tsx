@@ -8,17 +8,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import Carrito from "./Carrito";
-import { URL_FUNCIONES_AZURE } from "./Constantes";
+import {
+  CLIENT_ID_FUNCIONES_AZURE,
+  CODIGO_FUNCIONES_AZURE,
+  URL_FUNCIONES_AZURE,
+} from "./Constantes";
 
 const CarritoDeCompras: React.FC = () => {
   const [carritos, setCarritos]: [Carrito[], any] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${URL_FUNCIONES_AZURE}/ObtenerCarrito`)
+      .get(
+        `${URL_FUNCIONES_AZURE}/ObtenerCarrito?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`
+      )
       .then((response) => setCarritos(response.data))
       .catch((error) => console.error("Error fetching products:", error));
   }, []);
@@ -30,19 +36,30 @@ const CarritoDeCompras: React.FC = () => {
   ) => {
     try {
       // Actualizamos la cantidad del artículo en el carrito.
-      await axios.post(`${URL_FUNCIONES_AZURE}/EditarCarrito`, {
-        articulo_id: carrito.articulo_id,
-        cantidad,
-      });
+      await axios.post(
+        `${URL_FUNCIONES_AZURE}/EditarCarrito?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`,
+        {
+          articulo_id: carrito.articulo_id,
+          cantidad,
+        }
+      );
 
       // Actualizamos el estado de los carritos.
       setCarritos(
         await axios
-          .get(`${URL_FUNCIONES_AZURE}/ObtenerCarrito`)
+          .get(
+            `${URL_FUNCIONES_AZURE}/ObtenerCarrito?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`
+          )
           .then((response) => response.data)
       );
-    } catch (error) {
-      console.error("Error fetching products:", error);
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        // Mostramos el error.
+        alert(error.response.data);
+      } else {
+        // Mostramos el error.
+        alert("Error al modificar la cantidad del artículo en el carrito.");
+      }
     }
   };
 
@@ -63,13 +80,18 @@ const CarritoDeCompras: React.FC = () => {
     if (confirmacionUsuario) {
       // Eliminamos el artículo del carrito.
       axios
-        .post(`${URL_FUNCIONES_AZURE}/EliminarCarrito`, {
-          articulo_id: carrito.articulo_id,
-        })
+        .post(
+          `${URL_FUNCIONES_AZURE}/EliminarCarrito?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`,
+          {
+            articulo_id: carrito.articulo_id,
+          }
+        )
         .then(() =>
           // Actualizamos el estado de los carritos.
           axios
-            .get(`${URL_FUNCIONES_AZURE}/ObtenerCarrito`)
+            .get(
+              `${URL_FUNCIONES_AZURE}/ObtenerCarrito?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`
+            )
             .then((response) => setCarritos(response.data))
         )
         .catch((error) => console.error("Error fetching products:", error));

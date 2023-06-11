@@ -3,7 +3,11 @@ import { Button, TextField, Box, Container, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { URL_FUNCIONES_AZURE } from "./Constantes";
+import {
+  CLIENT_ID_FUNCIONES_AZURE,
+  CODIGO_FUNCIONES_AZURE,
+  URL_FUNCIONES_AZURE,
+} from "./Constantes";
 import Articulo from "./Articulo";
 
 // Esquema de validación para cada Artículo en el formulario.
@@ -57,7 +61,10 @@ const AgregarArticulo: React.FC = () => {
     // onSubmit es la función que se ejecuta cuando el usuario presiona el botón de submit.
     onSubmit: async (values: Articulo, { setSubmitting }) => {
       axios
-        .post(`${URL_FUNCIONES_AZURE}/CrearArticulo`, values)
+        .post(
+          `${URL_FUNCIONES_AZURE}/CrearArticulo?code=${CODIGO_FUNCIONES_AZURE}&client-id=${CLIENT_ID_FUNCIONES_AZURE}`,
+          values
+        )
         .then((response) => {
           console.log(response);
           if (response.status === 201) {

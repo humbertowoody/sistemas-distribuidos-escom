@@ -31,8 +31,15 @@ const httpTrigger: AzureFunction = async function (
 
   try {
     // Abrimos la conexión a la base de datos.
-    const sequelize = new Sequelize("mysql://root:root@localhost:3306/tarea9", {
+    const sequelize = new Sequelize("mysql://humberto:Tacos12345@t9-bd-2016630495.mysql.database.azure.com:3306/tarea9", {
       dialect: "mysql",
+      dialectOptions: {
+        multipleStatements: true,
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
     });
 
     // Variable para el resultado.
@@ -41,7 +48,7 @@ const httpTrigger: AzureFunction = async function (
     // Si recibimos el nombre, usamos un query por nombre.
     if (nombre) {
       articulos = await sequelize.query<Articulo>(
-        "SELECT id, nombre, descripcion, precio, cantidad, CONVERT(fotografia using utf8) as fotografia FROM articulos WHERE nombre LIKE :nombre",
+        "SELECT id, nombre, descripcion, precio, cantidad, CONVERT(fotografia using utf8) as fotografia FROM articulos WHERE nombre LIKE :nombre OR descripcion LIKE :nombre",
         {
           type: QueryTypes.SELECT,
           // Mapeamos los resultados a la interface Articulo.
@@ -67,7 +74,7 @@ const httpTrigger: AzureFunction = async function (
 
     // Enviamos la respuesta.
     context.res = {
-      // status: 200, /* Defaults to 200 */
+      status: 200, 
       // Enviamos los artículos como respuesta.
       body: articulos,
     };

@@ -16,6 +16,9 @@ const Inicio: React.FC = () => {
           Desarrollado por: Humberto Alejandro Ortega Alcocer
         </Typography>
         <Typography variant="body1" component="p" gutterBottom>
+          2016630495
+        </Typography>
+        <Typography variant="body1" component="p" gutterBottom>
           Sistemas Distribuidos - 4CV13
         </Typography>
       </Box>
